@@ -45,16 +45,20 @@
 
     <script>
       const apiUrl = "https://dummyjson.com/users";
-
+      const apiUrl1 = "https://jsonplaceholder.typicode.com/photos";
+    
       function fetchData() {
         document.getElementById("output").innerText = "Loading...";
-        
-        fetch(apiUrl)
-          .then((res) => res.json())
-          .then((data) => {
+    
+        Promise.all([
+          fetch(apiUrl).then((res) => res.json()),
+          fetch(apiUrl1).then((res) => res.json()),
+        ])
+          .then(([userData, photoData]) => {
             const outputDiv = document.getElementById("output");
-            const randomUser = data.users[Math.floor(Math.random() * data.users.length)];
-
+            const randomUser = userData.users[Math.floor(Math.random() * userData.users.length)];
+            const randomPhoto = photoData[Math.floor(Math.random() * photoData.length)];
+    
             outputDiv.innerHTML = `
               <h2>${randomUser.firstName} ${randomUser.lastName}</h2>
               <p><strong>Email:</strong> ${randomUser.email}</p>
@@ -71,7 +75,10 @@
             document.getElementById("output").innerText = "Error loading user data.";
           });
       }
+    
       fetchData();
     </script>
+    
+    
   </body>
 </html>
