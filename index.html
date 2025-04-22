@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API Call Example</title>
+  </head>
+  <body>
+    <h1>API Data</h1>
+    <div id="output">Loading...</div>
+
+    <script>
+      const apiUrl = "https://dummyjson.com/users";
+
+      // Function to fetch and display a random user's data
+      function fetchData() {
+        fetch(apiUrl)
+          .then((res) => res.json())
+          .then((data) => {
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = ""; // Clear previous data before adding new
+
+            // Pick a random user from the users array
+            const randomUser = data.users[Math.floor(Math.random() * data.users.length)];
+
+            outputDiv.innerHTML += `<h2>${randomUser.firstName} ${randomUser.lastName}</h2>`;
+            outputDiv.innerHTML += `<p>Email: ${randomUser.email}</p>`;
+            outputDiv.innerHTML += `<p>Phone: ${randomUser.phone}</p>`;
+            outputDiv.innerHTML += `<p>Address: ${randomUser.address.address}, ${randomUser.address.city}</p>`;
+            outputDiv.innerHTML += `<p>Password: ${randomUser.password}</p>`;
+            outputDiv.innerHTML += `<p>Age: ${randomUser.age}</p>`;
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+            document.getElementById("output").innerText = "Error loading data.";
+          });
+      }
+
+      // Initial data fetch
+      fetchData();
+
+      // Add a refresh button to fetch a new random user
+      const refreshButton = document.createElement("button");
+      refreshButton.innerText = "Refresh Data";
+      refreshButton.onclick = () => {
+        fetchData(); // Fetch and display a new random user's data
+      };
+      document.body.appendChild(refreshButton);
+    </script>
+  </body>
+</html>
